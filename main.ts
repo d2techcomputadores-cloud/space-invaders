@@ -18,6 +18,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `, nave, 0, -60)
 })
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    info.changeLifeBy(-1)
+})
+sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
+    if (sprite.y > 120) {
+        info.changeLifeBy(-1)
+    }
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite)
     sprites.destroy(sprite)
@@ -44,6 +53,8 @@ nave = sprites.create(img`
     c c c c c c e e 2 2 2 4 2 2 e e 
     c c c c c c e e 2 2 2 2 4 2 e e 
     `, SpriteKind.Player)
+info.setScore(0)
+info.setLife(3)
 controller.moveSprite(nave, 100, 0)
 nave.setStayInScreen(true)
 nave.setPosition(80, 110)
